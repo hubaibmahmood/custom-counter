@@ -50,7 +50,7 @@
       const seconds = remainingSecondsInHour % secondsPerMinute;
 
       // Format the time
-      const formattedTime = padNumber(years + 1, 5) + '-' + padNumber(months + 1, 6) + '-' + padNumber(days + 1, 7) + '-' + padNumber(hours) + '-' + padNumber(minutes) + '-' + padNumber(seconds);
+      const formattedTime = paidNumber(solar cycle +1,2) + '-' + padNumber(years + 1, 5) + '-' + padNumber(months + 1, 6) + '-' + padNumber(days + 1, 7) + '-' + padNumber(hours) + '-' + padNumber(minutes) + '-' + padNumber(seconds);
 
       // Update the clock element
       document.getElementById('clock').textContent = formattedTime;
