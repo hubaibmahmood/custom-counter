@@ -13,8 +13,8 @@
 <script>
   function updateClock() {
   // Define the custom time units
-  const secondsPerMinute = 60;
-  const minutesPerHour = 60;
+  const secondsPerMinute = 90;
+  const minutesPerHour = 90;
   const hoursPerDay = 27;
   const minutesPerDay = minutesPerHour * hoursPerDay;
   const secondsPerDay = secondsPerMinute * minutesPerDay;
@@ -35,6 +35,14 @@
 
   // Set the initial starting points. Here you can adjust the time based on a small math. difference
   // Example: You want to set initial years to 2, set it to -46 to receive the difference (default: 48 - 46 = 2)
+
+  // You need to do this for the hours, minutes and seconds
+  // Solar cycle, years and months and days can be set normal
+
+  // The reason is that the second, hours and minutes will always have a default (The normal time) and you need
+  // To calibrate the HH-MM-SS by using the difference between you're desired value and the current value
+  // To check the current value, you set, e.g. const initialHours = 0
+
   // Set based on what you said here:
   // Set the clock so that it is 3 hours behind the current time example 12 noon my time is 9 am 12 midnight is 9 pm
   // you need to add the solar cycle 25 to the counter so that it moves up by one every 27000 years this will have 2 digit columns
@@ -44,48 +52,46 @@
   // once this is done highlight the command lines that show that the program knows when to advance the times every 27 hour a day increases, every 45 days a turn increases, every 360 days and or 8 turns a year increases, every 27000 years a solar cycle increases. turns do not reset until 216 000, rays do not reset until 9720000 rings or years do not reset until 27000
 
   const initialSolarCycles = 25;
-  const initialYears = -46;
-  const initialMonths = 19;
-  const initialDays = 929;
-  const initialHours = 0;
-  const initialMinutes = 0;
+  const initialYears = 2;
+  const initialMonths = 21;
+  const initialDays = 948;
+  const initialHours = -208680;
+  const initialMinutes = 15;
   const initialSeconds = 0;
 
   // Get the current time and adjust it to be 3 hours behind
-  const now = new Date();
-  const currentTime = now.getTime() - 3 * 60 * 60 * 1000; // 3 hours behind
 
   // Calculate the total seconds since the epoch (1970-01-01) with the adjusted time
+  const now = new Date();
+  const currentTime = now.getTime() - 3 * 60 * 60 * 1000; // 3 hours behind
   const totalSeconds = Math.floor(currentTime / 1000);
 
   // Calculate the custom time units
   const totalCustomSeconds = totalSeconds + 3 * 60 * 60; // Adjust for 3 hours behind
 
-  // Calculate the elapsed solar cycles, years, months, and days since the starting point
-  const elapsedSolarCycles = Math.floor(totalCustomSeconds / (secondsPerDay * daysPerYear * solarCyclesPerReset));
-  const elapsedYears = Math.floor(totalCustomSeconds / secondsPerYear);
-  const elapsedMonths = Math.floor((totalCustomSeconds % secondsPerYear) / secondsPerMonth);
-  const elapsedDays = Math.floor((totalCustomSeconds % secondsPerMonth) / secondsPerDay);
+  // Calculate the elapsed time since the starting point
+  const elapsedSeconds = totalCustomSeconds % secondsPerMinute;
+  const elapsedMinutes = Math.floor((totalCustomSeconds / secondsPerMinute) % minutesPerHour);
+  const elapsedHours = Math.floor(totalCustomSeconds / (secondsPerMinute * minutesPerHour));
 
   // Calculate the current values for solar cycle, turn (month), and ray (day)
-  const currentSolarCycle = initialSolarCycles + elapsedSolarCycles;
-  const currentYear = initialYears + elapsedYears;
-  const currentMonth = initialMonths + elapsedMonths;
-  const currentDay = initialDays + elapsedDays;
-
-  // Calculate the remaining hours, minutes, and seconds
-  const remainingSeconds = totalCustomSeconds % secondsPerDay;
-  const currentHour = initialHours + Math.floor(remainingSeconds / secondsPerHour);
-  const remainingSecondsInHour = remainingSeconds % secondsPerHour;
-  const currentMinute = initialMinutes + Math.floor(remainingSecondsInHour / secondsPerMinute);
-  const currentSecond = initialSeconds + remainingSecondsInHour % secondsPerMinute;
+  const currentSolarCycle = initialSolarCycles + Math.floor(elapsedSeconds / (secondsPerDay * daysPerYear * solarCyclesPerReset));
+  const currentYear = initialYears + Math.floor(elapsedSeconds / secondsPerYear);
+  const currentMonth = initialMonths + Math.floor((elapsedSeconds % secondsPerYear) / secondsPerMonth);
+  const currentDay = initialDays + Math.floor((elapsedSeconds % secondsPerMonth) / secondsPerDay);
+  const currentHour = initialHours + elapsedHours;
+  const currentMinute = initialMinutes + elapsedMinutes;
+  const currentSecond = initialSeconds + elapsedSeconds;
 
   // Format the time
-  const formattedTime = padNumber(currentSolarCycle, 2) + '-' + padNumber(currentYear, 5) + '-' + padNumber(currentMonth, 6) + '-' + padNumber(currentDay, 7) + '-' + padNumber(currentHour) + '-' + padNumber(currentMinute) + '-' + padNumber(currentSecond);
+  const formattedTime = padNumber(currentSolarCycle, 2) + '-' + padNumber(currentYear, 5) + '-' + padNumber(currentMonth, 6) + '-' + padNumber(currentDay, 7) + '-' + padNumber(currentHour, 2) + '-' + padNumber(currentMinute) + '-' + padNumber(currentSecond);
 
   // Update the clock element
   document.getElementById('clock').textContent = formattedTime;
 }
+
+// Rest of the code remains the same...
+
 
 // Function to pad numbers with leading zeros
 function padNumber(num, length) {
