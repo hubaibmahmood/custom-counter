@@ -33,30 +33,15 @@
   const raysPerReset = 9720000; // 9,720,000 rays until rays reset
   const solarCyclesPerReset = 27000; // 27,000 solar cycles until solar cycles reset
 
-  // Set the initial starting points. Here you can adjust the time based on a small math. difference
-  // Example: You want to set initial years to 2, set it to -46 to receive the difference (default: 48 - 46 = 2)
-
-  // You need to do this for the hours, minutes and seconds
-  // Solar cycle, years and months and days can be set normal
-
-  // The reason is that the second, hours and minutes will always have a default (The normal time) and you need
-  // To calibrate the HH-MM-SS by using the difference between you're desired value and the current value
-  // To check the current value, you set, e.g. const initialHours = 0
-
-  // Set based on what you said here:
-  // Set the clock so that it is 3 hours behind the current time example 12 noon my time is 9 am 12 midnight is 9 pm
-  // you need to add the solar cycle 25 to the counter so that it moves up by one every 27000 years this will have 2 digit columns
-  // the clock should read solar cycle = 25 Ring (year) = 2 Turn (Month) = 21 Ray (day) = 947
-  // 25-00002-000021-0000947-00:00:00
-  // sc ring turns ray hr min sec
-  // once this is done highlight the command lines that show that the program knows when to advance the times every 27 hour a day increases, every 45 days a turn increases, every 360 days and or 8 turns a year increases, every 27000 years a solar cycle increases. turns do not reset until 216 000, rays do not reset until 9720000 rings or years do not reset until 27000
-
+  
+   // MARK: HERE YOU CAN "CALIBRATE" THE CLOCK. BEFORE YOU DO SO CHECK WHAT HOUR IT HAS AND
+    // BUILD THE DIFFERENCE, EXAMPLE HH=13 AND YOU WANT 7, SET initialHours = -6
   const initialSolarCycles = 25;
   const initialYears = 2;
   const initialMonths = 21;
-  const initialDays = 948;
-  const initialHours = -208681;
-  const initialMinutes = -45;
+  const initialDays = 949;
+  const initialHours = 0;
+  const initialMinutes = 0;
   const initialSeconds = 0;
 
   // Get the current time and adjust it to be 3 hours behind
@@ -70,9 +55,10 @@
   const totalCustomSeconds = totalSeconds + 3 * 60 * 60; // Adjust for 3 hours behind
 
   // Calculate the elapsed time since the starting point
-  const elapsedSeconds = totalCustomSeconds % secondsPerMinute;
-  const elapsedMinutes = Math.floor((totalCustomSeconds / secondsPerMinute) % minutesPerHour);
-  const elapsedHours = Math.floor(totalCustomSeconds / (secondsPerMinute * minutesPerHour));
+  // Calculate the elapsed time since the starting point
+const elapsedSeconds = totalCustomSeconds % secondsPerMinute;
+const elapsedMinutes = Math.floor((totalCustomSeconds / secondsPerMinute) % minutesPerHour);
+const elapsedHours = Math.floor((totalCustomSeconds / (secondsPerMinute * minutesPerHour)) % hoursPerDay);
 
   // Calculate the current values for solar cycle, turn (month), and ray (day)
   const currentSolarCycle = initialSolarCycles + Math.floor(elapsedSeconds / (secondsPerDay * daysPerYear * solarCyclesPerReset));
