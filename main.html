@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <title>Custom Clock</title>
+</head>
+
+<body>
+  <div class="text-center mt-5">
+    <h1 class="clock" id="clock"></h1>
+    <h1 class="clock" id="days"></h1>
+    <h1 class="clock" id="months"></h1>
+    <h1 class="clock" id="years"></h1>
+    <h1 class="clock" id="solarCycles"></h1>
+
+    <script>
+      let advances = 0;
+      let minutes = 0;
+      let advanceHours = 0;
+      let totalDays = 0;
+
+      // Define custom time units
+      const secondsPerAdvance = 90;
+      const advancesPerMinute = 90;
+      const minutesPerAdvanceHour = 90;
+      const advanceHoursPerDay = 18;
+      const daysPerMonth = 45;
+      const monthsPerYear = 8;
+      const daysPerYear = daysPerMonth * monthsPerYear;
+      const daysPerSolarCycle = 9720000;
+
+      function initializeClock() {
+        // Get the current time
+        const now = new Date();
+
+        // Calculate time advances based on the current time
+        advances = (now.getSeconds() % secondsPerAdvance);
+        minutes = (now.getMinutes() % advancesPerMinute);
+        advanceHours = (now.getHours() % minutesPerAdvanceHour);
+
+
+        // advances = 0;
+        // minutes = 70;
+        // advanceHours = 17;
+
+        // Update the clock initially
+        updateClock();
+      }
+      function updateClock() {
+        // Define custom time units
+        const secondsPerAdvance = 90;
+        const advancesPerMinute = 90;
+        const minutesPerAdvanceHour = 90;
+        const advanceHoursPerDay = 18;
+        const daysPerMonth = 45;
+        const monthsPerYear = 8;
+        const daysPerYear = daysPerMonth * monthsPerYear;
+        const daysPerSolarCycle = 9720000;
+
+        // Calculate time advances
+        advances = (advances + 1) % advancesPerMinute;
+        if (advances === 0) {
+          updateMinutes(minutesPerAdvanceHour);
+        }
+
+        // Calculate month and year advances
+        const totalMonths = Math.floor(totalDays / daysPerMonth);
+        const months = totalMonths % monthsPerYear;
+        const totalYears = Math.floor(totalMonths / monthsPerYear);
+        const years = totalYears % (daysPerYear / daysPerMonth);
+
+        // Calculate solar cycle advances
+        const solarCycles = Math.floor(totalYears / (daysPerSolarCycle / daysPerYear));
+
+        // Format the time
+        const formattedTime =
+          padder(solarCycles, "solar") + "-" +padder(years, "year") + "-" + padder(months, "month") + "-" + padder(totalDays, "days") + "-" +
+          padNumber(advanceHours) + ':' +
+          padNumber(minutes) + ':' +
+          padNumber(advances);
+
+        // Update the clock element
+        document.getElementById('clock').textContent = formattedTime;
+
+        // Update additional elements (days, months, years, solar cycles)
+        document.getElementById('days').textContent = totalDays + '-RAYS';
+        document.getElementById('months').textContent = months + '-TURNS';
+        document.getElementById('years').textContent = years + '-Rings';
+        document.getElementById('solarCycles').textContent = solarCycles + '-solar cycles';
+      }
+
+      function updateMinutes(minutesPerAdvanceHour) {
+        minutes = (minutes + 1) % minutesPerAdvanceHour;
+        if (minutes === 0) {
+          updateHours();
+        }
+      }
+
+      function updateHours() {
+        let advanceHoursPerDay = 18;
+
+        advanceHours = (advanceHours + 1) % advanceHoursPerDay;
+        if (advanceHours === 0) {
+          updateDays();
+        }
+      }
+
+      function updateDays() {
+        const daysPerSolarCycle = 9720000;
+        totalDays = (totalDays + 1) % daysPerSolarCycle;
+      }
+
+      function padNumber(num) {
+        return String(num).padStart(2, '0');
+      }
+
+      function padder(num, type){
+        if (type === 'year'){
+            return String(num).padStart(7, '0')
+        }
+        else if(type === 'month'){
+
+            return String(num).padStart(6, '0')
+        }
+        else if(type === 'days'){
+
+            return String(num).padStart(5, '0')
+        }
+        else if(type === 'solar'){
+
+            return String(num).padStart(2, '0')
+        }
+      }
+
+      // Initialize the clock based on the current date
+      initializeClock();
+
+      // Update the clock every second
+      setInterval(updateClock, 1000);
+    </script>
+  </div>
+</body>
+
+</html>
