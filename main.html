@@ -13,16 +13,18 @@
 <body>
   <div class="text-center mt-5">
     <h1 class="clock" id="clock"></h1>
-    <h1 class="clock" id="days"></h1>
+    <!-- <h1 class="clock" id="days"></h1>
     <h1 class="clock" id="months"></h1>
     <h1 class="clock" id="years"></h1>
-    <h1 class="clock" id="solarCycles"></h1>
+    <h1 class="clock" id="solarCycles"></h1> -->
 
     <script>
       let advances = 0;
       let minutes = 0;
       let advanceHours = 0;
-      let totalDays = 0;
+      // let totalDays = 959;
+      let totalDays = (9720000 * 25) + 960;
+      let solarCycles = 0
 
       // Define custom time units
       const secondsPerAdvance = 90;
@@ -44,12 +46,17 @@
         advanceHours = (now.getHours() % minutesPerAdvanceHour);
 
 
-        // advances = 0;
-        // minutes = 70;
-        // advanceHours = 17;
+        advances = 0;
+        minutes = 0;
+        advanceHours = 8;
 
         // Update the clock initially
         updateClock();
+
+        if (totalDays > 0){
+          updateInitialDays()
+        }
+        
       }
       function updateClock() {
         // Define custom time units
@@ -68,6 +75,7 @@
           updateMinutes(minutesPerAdvanceHour);
         }
 
+
         // Calculate month and year advances
         const totalMonths = Math.floor(totalDays / daysPerMonth);
         const months = totalMonths % monthsPerYear;
@@ -75,11 +83,11 @@
         const years = totalYears % (daysPerYear / daysPerMonth);
 
         // Calculate solar cycle advances
-        const solarCycles = Math.floor(totalYears / (daysPerSolarCycle / daysPerYear));
+        // solarCycles = Math.floor(totalYears / (daysPerSolarCycle / daysPerYear));
 
         // Format the time
         const formattedTime =
-          padder(solarCycles, "solar") + "-" +padder(years, "year") + "-" + padder(months, "month") + "-" + padder(totalDays, "days") + "-" +
+          padder(solarCycles, "solar") + "-" +padder(totalYears, "year") + "-" + padder(totalMonths, "month") + "-" + padder(totalDays, "days") + "-" +
           padNumber(advanceHours) + ':' +
           padNumber(minutes) + ':' +
           padNumber(advances);
@@ -88,10 +96,10 @@
         document.getElementById('clock').textContent = formattedTime;
 
         // Update additional elements (days, months, years, solar cycles)
-        document.getElementById('days').textContent = totalDays + '-RAYS';
-        document.getElementById('months').textContent = months + '-TURNS';
-        document.getElementById('years').textContent = years + '-Rings';
-        document.getElementById('solarCycles').textContent = solarCycles + '-solar cycles';
+        // document.getElementById('days').textContent = totalDays + '-RAYS';
+        // document.getElementById('months').textContent = months + '-TURNS';
+        // document.getElementById('years').textContent = years + '-Rings';
+        // document.getElementById('solarCycles').textContent = solarCycles + '-solar cycles';
       }
 
       function updateMinutes(minutesPerAdvanceHour) {
@@ -112,16 +120,51 @@
 
       function updateDays() {
         const daysPerSolarCycle = 9720000;
+        const totalMonths = Math.floor(totalDays / daysPerMonth);
+        const months = totalMonths % monthsPerYear;
+        const totalYears = Math.floor(totalMonths / monthsPerYear);
+        const years = totalYears % (daysPerYear / daysPerMonth);
+
+
+        if (((totalDays + 1) % daysPerSolarCycle) < totalDays){
+          console.log(solarCycles)
+          console.log(Math.ceil(totalYears / (daysPerSolarCycle / daysPerYear)))
+          solarCycles = solarCycles + Math.ceil(totalYears / (daysPerSolarCycle / daysPerYear));
+        }
+
         totalDays = (totalDays + 1) % daysPerSolarCycle;
+        // solarCycles = solarCycles + Math.floor(totalYears / (daysPerSolarCycle / daysPerYear));
+        // totalDays = (totalDays ) % daysPerSolarCycle;
+
       }
 
+      
+      function updateInitialDays() {
+        const daysPerSolarCycle = 9720000;
+
+        const totalMonths = Math.floor(totalDays / daysPerMonth);
+        const months = totalMonths % monthsPerYear;
+        const totalYears = Math.floor(totalMonths / monthsPerYear);
+        const years = totalYears % (daysPerYear / daysPerMonth);
+
+        // solarCycles = solarCycles + Math.floor(totalYears / (daysPerSolarCycle / daysPerYear));
+        // totalDays = (totalDays ) % daysPerSolarCycle;
+        if (((totalDays + 1) % daysPerSolarCycle) < totalDays){
+          // console.log(totalDays / daysPerSolarCycle)
+          solarCycles = solarCycles + Math.floor(totalYears / (daysPerSolarCycle / daysPerYear));
+          // console.log
+        }
+        totalDays = (totalDays) % daysPerSolarCycle;
+      }
+
+      
       function padNumber(num) {
         return String(num).padStart(2, '0');
       }
 
       function padder(num, type){
         if (type === 'year'){
-            return String(num).padStart(7, '0')
+            return String(num).padStart(5, '0')
         }
         else if(type === 'month'){
 
@@ -129,7 +172,7 @@
         }
         else if(type === 'days'){
 
-            return String(num).padStart(5, '0')
+            return String(num).padStart(7, '0')
         }
         else if(type === 'solar'){
 
