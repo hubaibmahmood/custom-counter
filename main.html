@@ -8,15 +8,112 @@
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
   <title>Custom Clock</title>
+  <style>
+    .text-center {
+      text-align: center;
+    }
+
+    .clock {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .clock-label {
+      font-size: 18px;
+    }
+
+    .clock-container {
+      display: block;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 10px;
+    }
+
+    .w-100 {
+      width: 100% !important;
+    }
+
+    p {
+      width: 150px;
+      margin: 0;
+      display: inline-block;
+      text-align: left !important;
+      padding-left: 50px;
+    }
+
+    .title{
+      font-size: 24px;
+    }
+    .pt-5{
+      padding-top: 5px;
+    }
+  </style>
 </head>
 
 <body>
   <div class="text-center mt-5">
-    <h1 class="clock" id="clock"></h1>
-    <!-- <h1 class="clock" id="days"></h1>
-    <h1 class="clock" id="months"></h1>
-    <h1 class="clock" id="years"></h1>
-    <h1 class="clock" id="solarCycles"></h1> -->
+
+    <span class="title">Mathorian KaGoDoRa</span>
+    <div class="clock-container">
+      <div class="w-100">
+        <div>
+          <p class="clock" id="seconds"></p>
+          <p class="clock-label">Shu</p>
+        </div>
+
+      </div>
+
+      <div class="w-100">
+        <div>
+          <p class="clock" id="minutes"></p>
+          <p class="clock-label">GoDo</p>
+        </div>
+
+      </div>
+      <div class="w-100">
+        <div>
+          <p class="clock" id="hours"></p>
+          <p class="clock-label">Do</p>
+        </div>
+      </div>
+      <div class="w-100">
+        <div>
+          <p class="clock" id="days"></p>
+          <p class="clock-label">Rays</p>
+        </div>
+      </div>
+      <div class="w-100">
+        <div>
+          <p class="clock" id="months"></p>
+          <p class="clock-label">Turn</p>
+        </div>
+      </div>
+      <div class="w-100">
+        <div>
+          <p class="clock" id="years"></p>
+          <p class="clock-label">Ring</p>
+        </div>
+      </div>
+      <div class="w-100">
+        <div>
+          <p class="clock" id="solarCycles"></p>
+          <p class="clock-label">Cycle</p>
+        </div>
+      </div>
+      <div class="w-100 pt-5">
+        <div>
+          <span class="clock" id="clock"></span>        
+        </div>
+      </div>
+    </div>
+    <!-- <p>Mathorian KaGoDoRa</p>
+    <p class="clock" id="seconds"></p>
+    <p class="clock" id="minutes"></p>
+    <p class="clock" id="hours"></p>
+    <p class="clock" id="days"></p>
+    <p class="clock" id="months"></p>
+    <p class="clock" id="years"></p>
+    <p class="clock" id="solarCycles"></p> -->
 
     <script>
       let advances = 0;
@@ -53,10 +150,10 @@
         // Update the clock initially
         updateClock();
 
-        if (totalDays > 0){
+        if (totalDays > 0) {
           updateInitialDays()
         }
-        
+
       }
       function updateClock() {
         // Define custom time units
@@ -87,19 +184,24 @@
 
         // Format the time
         const formattedTime =
-          padder(solarCycles, "solar") + "-" +padder(totalYears, "year") + "-" + padder(totalMonths, "month") + "-" + padder(totalDays, "days") + "-" +
+          padder(solarCycles, "solar") + "-"
+          + padder(totalYears, "year") + "-" +
+          padder(totalMonths, "month") + "-" + padder(totalDays, "days") + "-" +
           padNumber(advanceHours) + ':' +
           padNumber(minutes) + ':' +
           padNumber(advances);
 
         // Update the clock element
-        document.getElementById('clock').textContent = formattedTime;
+         document.getElementById('clock').textContent = formattedTime;
 
         // Update additional elements (days, months, years, solar cycles)
-        // document.getElementById('days').textContent = totalDays + '-RAYS';
-        // document.getElementById('months').textContent = months + '-TURNS';
-        // document.getElementById('years').textContent = years + '-Rings';
-        // document.getElementById('solarCycles').textContent = solarCycles + '-solar cycles';
+        document.getElementById('seconds').textContent = padNumber(advances);
+        document.getElementById('minutes').textContent = padNumber(minutes);
+        document.getElementById('hours').textContent = padNumber(advanceHours);
+        document.getElementById('days').textContent = padder(totalDays, "days");
+        document.getElementById('months').textContent = padder(totalMonths, "month");
+        document.getElementById('years').textContent = padder(totalYears, "year");
+        document.getElementById('solarCycles').textContent = padder(solarCycles, "solar");
       }
 
       function updateMinutes(minutesPerAdvanceHour) {
@@ -126,7 +228,7 @@
         const years = totalYears % (daysPerYear / daysPerMonth);
 
 
-        if (((totalDays + 1) % daysPerSolarCycle) < totalDays){
+        if (((totalDays + 1) % daysPerSolarCycle) < totalDays) {
           console.log(solarCycles)
           console.log(Math.ceil(totalYears / (daysPerSolarCycle / daysPerYear)))
           solarCycles = solarCycles + Math.ceil(totalYears / (daysPerSolarCycle / daysPerYear));
@@ -138,7 +240,7 @@
 
       }
 
-      
+
       function updateInitialDays() {
         const daysPerSolarCycle = 9720000;
 
@@ -149,7 +251,7 @@
 
         // solarCycles = solarCycles + Math.floor(totalYears / (daysPerSolarCycle / daysPerYear));
         // totalDays = (totalDays ) % daysPerSolarCycle;
-        if (((totalDays + 1) % daysPerSolarCycle) < totalDays){
+        if (((totalDays + 1) % daysPerSolarCycle) < totalDays) {
           // console.log(totalDays / daysPerSolarCycle)
           solarCycles = solarCycles + Math.floor(totalYears / (daysPerSolarCycle / daysPerYear));
           // console.log
@@ -157,26 +259,26 @@
         totalDays = (totalDays) % daysPerSolarCycle;
       }
 
-      
+
       function padNumber(num) {
         return String(num).padStart(2, '0');
       }
 
-      function padder(num, type){
-        if (type === 'year'){
-            return String(num).padStart(5, '0')
+      function padder(num, type) {
+        if (type === 'year') {
+          return String(num).padStart(5, '0')
         }
-        else if(type === 'month'){
+        else if (type === 'month') {
 
-            return String(num).padStart(6, '0')
+          return String(num).padStart(6, '0')
         }
-        else if(type === 'days'){
+        else if (type === 'days') {
 
-            return String(num).padStart(7, '0')
+          return String(num).padStart(7, '0')
         }
-        else if(type === 'solar'){
+        else if (type === 'solar') {
 
-            return String(num).padStart(2, '0')
+          return String(num).padStart(2, '0')
         }
       }
 
