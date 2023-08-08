@@ -142,10 +142,15 @@
         minutes = (now.getMinutes() % advancesPerMinute);
         advanceHours = (now.getHours() % minutesPerAdvanceHour);
 
-
-        advances = 0;
-        minutes = 0;
-        advanceHours = 8;
+        // i=1
+        // while(advanceHours != 8){
+        //   advanceHours = (now.getHours() % minutesPerAdvanceHour) - i;
+        //   i += 1
+        // }
+        
+        // advances = 0;
+        // minutes = 0;
+        // advanceHours = 8;
 
         // Update the clock initially
         updateClock();
