@@ -1,93 +1,299 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
   <title>Custom Clock</title>
+  <style>
+    .text-center {
+      text-align: center;
+    }
+
+    .clock {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .clock-label {
+      font-size: 18px;
+    }
+
+    .clock-container {
+      display: block;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 10px;
+    }
+
+    .w-100 {
+      width: 100% !important;
+    }
+
+    p {
+      width: 150px;
+      margin: 0;
+      display: inline-block;
+      text-align: left !important;
+      padding-left: 50px;
+    }
+
+    .title{
+      font-size: 24px;
+    }
+    .pt-5{
+      padding-top: 5px;
+    }
+  </style>
 </head>
+
 <body>
-<div class="text-center mt-5">
-  <h1 class="clock" id="clock"></h1>
-</div>
+  <div class="text-center mt-5">
 
-<script>
-  function updateClock() {
-  // Define the custom time units
-  const secondsPerMinute = 90;
-  const minutesPerHour = 90;
-  const hoursPerDay = 18;
-  const minutesPerDay = minutesPerHour * hoursPerDay;
-  const secondsPerDay = secondsPerMinute * minutesPerDay;
-  const daysPerMonth = 45;
-  const hoursPerMonth = hoursPerDay * daysPerMonth;
-  const minutesPerMonth = minutesPerHour * hoursPerMonth;
-  const secondsPerMonth = secondsPerMinute * minutesPerMonth;
-  const monthsPerYear = 8;
-  const daysPerYear = daysPerMonth * monthsPerYear;
-  const hoursPerYear = hoursPerMonth * monthsPerYear;
-  const minutesPerYear = minutesPerMonth * monthsPerYear;
-  const secondsPerYear = secondsPerMonth * monthsPerYear;
-  const secondsPerHour = secondsPerMinute * minutesPerHour;
-  const daysPerReset = 9720000; // 9,720,000 days until days reset
-  const turnsPerReset = 216000; // 216,000 turns until turns reset
-  const raysPerReset = 9720000; // 9,720,000 rays until rays reset
-  const solarCyclesPerReset = 27000; // 27,000 solar cycles until solar cycles reset
+    <span class="title">Mathorian KaGoDoRa</span>
+    <div class="clock-container">
+      <div class="w-100">
+        <div>
+          <p class="clock" id="seconds"></p>
+          <p class="clock-label">Shu</p>
+        </div>
 
-  
-   // MARK: HERE YOU CAN "CALIBRATE" THE CLOCK. BEFORE YOU DO SO CHECK WHAT HOUR IT HAS AND
-    // BUILD THE DIFFERENCE, EXAMPLE HH=13 AND YOU WANT 7, SET initialHours = -6
-  const initialSolarCycles = 25;
-  const initialYears = 2;
-  const initialMonths = 21;
-  const initialDays = 951;
-  const initialHours = -11;
-  const initialMinutes = 10;
-  const initialSeconds = 0;
+      </div>
 
-  // Get the current time and adjust it to be 3 hours behind
+      <div class="w-100">
+        <div>
+          <p class="clock" id="minutes"></p>
+          <p class="clock-label">GoDo</p>
+        </div>
 
-  // Calculate the total seconds since the epoch (1970-01-01) with the adjusted time
-  const now = new Date();
-  const currentTime = now.getTime() - 3 * 60 * 60 * 1000; // 3 hours behind
-  const totalSeconds = Math.floor(currentTime / 1000);
+      </div>
+      <div class="w-100">
+        <div>
+          <p class="clock" id="hours"></p>
+          <p class="clock-label">Do</p>
+        </div>
+      </div>
+      <div class="w-100">
+        <div>
+          <p class="clock" id="days"></p>
+          <p class="clock-label">Rays</p>
+        </div>
+      </div>
+      <div class="w-100">
+        <div>
+          <p class="clock" id="months"></p>
+          <p class="clock-label">Turn</p>
+        </div>
+      </div>
+      <div class="w-100">
+        <div>
+          <p class="clock" id="years"></p>
+          <p class="clock-label">Ring</p>
+        </div>
+      </div>
+      <div class="w-100">
+        <div>
+          <p class="clock" id="solarCycles"></p>
+          <p class="clock-label">Cycle</p>
+        </div>
+      </div>
+      <div class="w-100 pt-5">
+        <div>
+          <span class="clock" id="clock"></span>        
+        </div>
+      </div>
+    </div>
+    <!-- <p>Mathorian KaGoDoRa</p>
+    <p class="clock" id="seconds"></p>
+    <p class="clock" id="minutes"></p>
+    <p class="clock" id="hours"></p>
+    <p class="clock" id="days"></p>
+    <p class="clock" id="months"></p>
+    <p class="clock" id="years"></p>
+    <p class="clock" id="solarCycles"></p> -->
 
-  // Calculate the custom time units
-  const totalCustomSeconds = totalSeconds + 3 * 60 * 60; // Adjust for 3 hours behind
+    <script>
+      let advances = 0;
+      let minutes = 0;
+      let advanceHours = 0;
+      // let totalDays = 959;
+      let totalDays = (9720000 * 25) + 960;
+      let solarCycles = 0
 
-  // Calculate the elapsed time since the starting point
-  // Calculate the elapsed time since the starting point
-const elapsedSeconds = totalCustomSeconds % secondsPerMinute;
-const elapsedMinutes = Math.floor((totalCustomSeconds / secondsPerMinute) % minutesPerHour);
-const elapsedHours = Math.floor((totalCustomSeconds / (secondsPerMinute * minutesPerHour)) % hoursPerDay);
+      // Define custom time units
+      const secondsPerAdvance = 90;
+      const advancesPerMinute = 90;
+      const minutesPerAdvanceHour = 90;
+      const advanceHoursPerDay = 18;
+      const daysPerMonth = 45;
+      const monthsPerYear = 8;
+      const daysPerYear = daysPerMonth * monthsPerYear;
+      const daysPerSolarCycle = 9720000;
 
-  // Calculate the current values for solar cycle, turn (month), and ray (day)
-  const currentSolarCycle = initialSolarCycles + Math.floor(elapsedSeconds / (secondsPerDay * daysPerYear * solarCyclesPerReset));
-  const currentYear = initialYears + Math.floor(elapsedSeconds / secondsPerYear);
-  const currentMonth = initialMonths + Math.floor((elapsedSeconds % secondsPerYear) / secondsPerMonth);
-  const currentDay = initialDays + Math.floor((elapsedSeconds % secondsPerMonth) / secondsPerDay);
-  const currentHour = initialHours + elapsedHours;
-  const currentMinute = initialMinutes + elapsedMinutes;
-  const currentSecond = initialSeconds + elapsedSeconds;
+      function initializeClock() {
+        // Get the current time
+        const now = new Date();
 
-  // Format the time
-  const formattedTime = padNumber(currentSolarCycle, 2) + '-' + padNumber(currentYear, 5) + '-' + padNumber(currentMonth, 6) + '-' + padNumber(currentDay, 7) + '-' + padNumber(currentHour, 2) + '-' + padNumber(currentMinute) + '-' + padNumber(currentSecond);
+        // Calculate time advances based on the current time
+        advances = (now.getSeconds() % secondsPerAdvance);
+        minutes = (now.getMinutes() % advancesPerMinute);
+        advanceHours = (now.getHours() % minutesPerAdvanceHour);
 
-  // Update the clock element
-  document.getElementById('clock').textContent = formattedTime;
-}
+        // i=1
+        // while(advanceHours != 8){
+        //   advanceHours = (now.getHours() % minutesPerAdvanceHour) - i;
+        //   i += 1
+        // }
+        
+        // advances = 0;
+        // minutes = 0;
+        // advanceHours = 8;
 
-// Rest of the code remains the same...
+        // Update the clock initially
+        updateClock();
+
+        if (totalDays > 0) {
+          updateInitialDays()
+        }
+
+      }
+      function updateClock() {
+        // Define custom time units
+        const secondsPerAdvance = 90;
+        const advancesPerMinute = 90;
+        const minutesPerAdvanceHour = 90;
+        const advanceHoursPerDay = 18;
+        const daysPerMonth = 45;
+        const monthsPerYear = 8;
+        const daysPerYear = daysPerMonth * monthsPerYear;
+        const daysPerSolarCycle = 9720000;
+
+        // Calculate time advances
+        advances = (advances + 1) % advancesPerMinute;
+        if (advances === 0) {
+          updateMinutes(minutesPerAdvanceHour);
+        }
 
 
-// Function to pad numbers with leading zeros
-function padNumber(num, length) {
-  return String(num).padStart(length, '0');
-}
+        // Calculate month and year advances
+        const totalMonths = Math.floor(totalDays / daysPerMonth);
+        const months = totalMonths % monthsPerYear;
+        const totalYears = Math.floor(totalMonths / monthsPerYear);
+        const years = totalYears % (daysPerYear / daysPerMonth);
 
-// Update the clock every second
-setInterval(updateClock, 1000);
+        // Calculate solar cycle advances
+        // solarCycles = Math.floor(totalYears / (daysPerSolarCycle / daysPerYear));
 
-</script>
+        // Format the time
+        const formattedTime =
+          padder(solarCycles, "solar") + "-"
+          + padder(totalYears, "year") + "-" +
+          padder(totalMonths, "month") + "-" + padder(totalDays, "days") + "-" +
+          padNumber(advanceHours) + ':' +
+          padNumber(minutes) + ':' +
+          padNumber(advances);
 
+        // Update the clock element
+         document.getElementById('clock').textContent = formattedTime;
+
+        // Update additional elements (days, months, years, solar cycles)
+        document.getElementById('seconds').textContent = padNumber(advances);
+        document.getElementById('minutes').textContent = padNumber(minutes);
+        document.getElementById('hours').textContent = padNumber(advanceHours);
+        document.getElementById('days').textContent = padder(totalDays, "days");
+        document.getElementById('months').textContent = padder(totalMonths, "month");
+        document.getElementById('years').textContent = padder(totalYears, "year");
+        document.getElementById('solarCycles').textContent = padder(solarCycles, "solar");
+      }
+
+      function updateMinutes(minutesPerAdvanceHour) {
+        minutes = (minutes + 1) % minutesPerAdvanceHour;
+        if (minutes === 0) {
+          updateHours();
+        }
+      }
+
+      function updateHours() {
+        let advanceHoursPerDay = 18;
+
+        advanceHours = (advanceHours + 1) % advanceHoursPerDay;
+        if (advanceHours === 0) {
+          updateDays();
+        }
+      }
+
+      function updateDays() {
+        const daysPerSolarCycle = 9720000;
+        const totalMonths = Math.floor(totalDays / daysPerMonth);
+        const months = totalMonths % monthsPerYear;
+        const totalYears = Math.floor(totalMonths / monthsPerYear);
+        const years = totalYears % (daysPerYear / daysPerMonth);
+
+
+        if (((totalDays + 1) % daysPerSolarCycle) < totalDays) {
+          console.log(solarCycles)
+          console.log(Math.ceil(totalYears / (daysPerSolarCycle / daysPerYear)))
+          solarCycles = solarCycles + Math.ceil(totalYears / (daysPerSolarCycle / daysPerYear));
+        }
+
+        totalDays = (totalDays + 1) % daysPerSolarCycle;
+        // solarCycles = solarCycles + Math.floor(totalYears / (daysPerSolarCycle / daysPerYear));
+        // totalDays = (totalDays ) % daysPerSolarCycle;
+
+      }
+
+
+      function updateInitialDays() {
+        const daysPerSolarCycle = 9720000;
+
+        const totalMonths = Math.floor(totalDays / daysPerMonth);
+        const months = totalMonths % monthsPerYear;
+        const totalYears = Math.floor(totalMonths / monthsPerYear);
+        const years = totalYears % (daysPerYear / daysPerMonth);
+
+        // solarCycles = solarCycles + Math.floor(totalYears / (daysPerSolarCycle / daysPerYear));
+        // totalDays = (totalDays ) % daysPerSolarCycle;
+        if (((totalDays + 1) % daysPerSolarCycle) < totalDays) {
+          // console.log(totalDays / daysPerSolarCycle)
+          solarCycles = solarCycles + Math.floor(totalYears / (daysPerSolarCycle / daysPerYear));
+          // console.log
+        }
+        totalDays = (totalDays) % daysPerSolarCycle;
+      }
+
+
+      function padNumber(num) {
+        return String(num).padStart(2, '0');
+      }
+
+      function padder(num, type) {
+        if (type === 'year') {
+          return String(num).padStart(5, '0')
+        }
+        else if (type === 'month') {
+
+          return String(num).padStart(6, '0')
+        }
+        else if (type === 'days') {
+
+          return String(num).padStart(7, '0')
+        }
+        else if (type === 'solar') {
+
+          return String(num).padStart(2, '0')
+        }
+      }
+
+      // Initialize the clock based on the current date
+      initializeClock();
+
+      // Update the clock every second
+      setInterval(updateClock, 1000);
+    </script>
+  </div>
 </body>
+
 </html>
